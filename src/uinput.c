@@ -1249,22 +1249,31 @@ void uinput_key_command(int down, int keysym, rfbClientPtr client) {
 	allowed_input_t input;
 	int d = direct_key_fd < 0 ? fd : direct_key_fd;
 
+	rfbLog("inside uinput_key_command: \n");
+
 	if (injectable && strchr(injectable, 'K') == NULL) {
+		rfbLog("injectable\n");
 		return;
 	}
 	if (view_only) {
+		rfbLog("view only\n");
 		return;
 	}
 	get_allowed_input(client, &input);
 	if (! input.keystroke) {
+		rfbLog("not allowed keystroke\n");
 		return;
 	}
 
 	scancode = lookup_code(keysym);
 
 	if (scancode < 0) {
+		rfbLog("scan code less than 0: %d -> %d %s fd=%d\n", keysym, scancode, down ? "down" : "up", d);
 		return;
 	}
+
+	rfbLog("uinput_key_command: %d -> %d %s fd=%d\n", keysym, scancode, down ? "down" : "up", d);
+
 	if (db) fprintf(stderr, "uinput_key_command: %d -> %d %s fd=%d\n", keysym, scancode, down ? "down" : "up", d);
 
 	memset(&ev, 0, sizeof(ev));
@@ -1302,6 +1311,8 @@ static int lookup_code(int keysym) {
 
 	switch(keysym) {
 #ifdef UINPUT_OK
+	case 0xffeb: return KEY_LEFTMETA;
+	case 0xffec: return KEY_RIGHTMETA;
 	case XK_Escape:	return KEY_ESC;
 	case XK_1:		return KEY_1;
 	case XK_2:		return KEY_2;

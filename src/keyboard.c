@@ -3178,7 +3178,7 @@ void keyboard(rfbBool down, rfbKeySym keysym, rfbClientPtr client) {
 	key_history[idx].down = down;
 	key_history[idx].time = tnow;
 
-	if (down && (keysym == XK_Alt_L || keysym == XK_Super_L)) {
+	if (down && (keysym == XK_Alt_L)) {
 		int i, k, run = 0, ups = 0;
 		double delay = 1.0;
 		KeySym ks;
@@ -3194,8 +3194,6 @@ void keyboard(rfbBool down, rfbKeySym keysym, rfbClientPtr client) {
 				break;
 			} else if (ks == keysym && ks == XK_Alt_L) {
 				run++;
-			} else if (ks == keysym && ks == XK_Super_L) {
-				run++;
 			} else {
 				break;
 			}
@@ -3210,15 +3208,6 @@ void keyboard(rfbBool down, rfbKeySym keysym, rfbClientPtr client) {
 			do_copy_screen = 1;
 		} else if (run == 5 && keysym == XK_Alt_L) {
 			;
-		} else if (run == 3 && keysym == XK_Super_L) {
-			rfbLog("3*Super_L, calling: set_xdamage_mark()\n");
-			set_xdamage_mark(0, 0, dpy_x, dpy_y);
-		} else if (run == 4 && keysym == XK_Super_L) {
-			rfbLog("4*Super_L, calling: check_xrecord_reset()\n");
-			check_xrecord_reset(1);
-		} else if (run == 5 && keysym == XK_Super_L) {
-			rfbLog("5*Super_L, calling: push_black_screen(0)\n");
-			push_black_screen(0);
 		}
 	}
 
