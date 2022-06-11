@@ -1302,6 +1302,8 @@ static int lookup_code(int keysym) {
 
 	switch(keysym) {
 #ifdef UINPUT_OK
+	case 0xffeb: return KEY_LEFTMETA;
+	case 0xffec: return KEY_RIGHTMETA;
 	case XK_Escape:	return KEY_ESC;
 	case XK_1:		return KEY_1;
 	case XK_2:		return KEY_2;
